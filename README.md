@@ -1,75 +1,71 @@
-# React + TypeScript + Vite
+# Pokémon browser (React)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small app built to compare React and Angular on the same set of features. The Angular version is at
+[pokemon-angular](https://github.com/YOUR-USERNAME/pokemon-angular), with the same functionality and
+layout and a different theme colour.
 
-Currently, two official plugins are available:
+Data and sprites come from [PokeAPI](https://pokeapi.co). This is an unofficial fan project and is not
+affiliated with or endorsed by Nintendo or The Pokémon Company.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
+- Browse Pokémon fetched from the API, with loading and error states
+- Debounced search
+- Favourites that persist across reloads
+- Detail page for each Pokémon (routing with a URL parameter, plus a not found page)
+- A note form for favourites, with validation and error messages shown once a field is touched
+- Unit and component tests
 
-## React Compiler
+## Tech stack
+- React with TypeScript, built with Vite
+- React Router v7
+- Zustand (with the `persist` middleware) for shared state
+- Vitest and React Testing Library
+- ESLint
+- Plain CSS with custom properties for theming
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Getting started
+Requires Node 20.19+ or 22.12+.
 
-## Expanding the ESLint configuration
+```bash
+npm install
+npm run dev
+```
+Then open http://localhost:5173.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+| Command | What it does |
+|---|---|
+| `npm run dev` | Start the dev server |
+| `npm run build` | Create a production build |
+| `npm test` | Run the tests in watch mode |
+| `npx vitest run` | Run the tests once |
+| `npm run lint` | Lint the code |
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+## Project structure
+```
+src/
+  components/   Reusable UI (FavouriteButton, NoteForm)
+  hooks/        Custom hooks (usePokemonList, usePokemonDetail, useDebounce)
+  pages/        Routed screens (ListPage, DetailPage, FavouritesPage)
+  stores/       Zustand store for favourites and notes
+  utils/        Plain functions (validateNote)
+  types.ts      Shared TypeScript types
+  App.tsx       Navigation and routes
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+## What it demonstrates
+- Fetching in effects with cleanup, using `AbortController` and `response.ok` checks
+- Custom hooks for data fetching and debouncing
+- Controlled inputs and derived validation state
+- A global store outside React, with selectors and persistence
+- Routing with route params
+- Testing hooks, a store, components and a page with a mocked `fetch`
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+## React vs Angular, in this project
+| | React (this repo) | Angular |
+|---|---|---|
+| Shared state | Zustand store | Signal-based service |
+| Data fetching | Custom hooks with `fetch` | `HttpClient` in a service |
+| Debounce | `useDebounce` hook | RxJS `debounceTime` |
+| Forms | Controlled inputs, manual validation | Reactive Forms |
+| Routing | React Router | Angular Router |
+| Tests | Vitest and React Testing Library | Vitest and `TestBed` |
