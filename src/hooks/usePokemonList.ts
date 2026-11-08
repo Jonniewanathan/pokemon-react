@@ -12,7 +12,7 @@ export function usePokemonList() {
         async function load() {
             try {
                 const response = await fetch(
-                    'https://pokeapi.co/api/v2/pokemon?limit=20',
+                    'https://pokeapi.co/api/v2/pokemon?limit=50',
                     { signal: controller.signal },
                 )
                 if (!response.ok) throw new Error(`Request failed: ${response.status}`)
